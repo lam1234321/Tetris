@@ -68,7 +68,8 @@ window.initGame = (React) => {
 
     const handleKeyDown = (event) => {
       let newColumn = squareColumn;
-
+      let newPosition = currentPosition; 
+      
       if (event.key === "ArrowRight") {
         newColumn += 1; // Attempt to move right
       } else if (event.key === "ArrowLeft") {
