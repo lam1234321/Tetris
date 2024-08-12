@@ -80,6 +80,9 @@ window.initGame = (React) => {
   } else if (event.key === "ArrowUp") { // Handle rotation
     rotateTetromino();
     return; // Exit to avoid moving down after rotation
+  } else if (event.key === " ") { // Handle hard drop
+    hardDropTetromino();
+    return; // Exit to avoid moving down after hard drop
   }
 
   // Check collision before updating the position for left/right movement
@@ -125,6 +128,29 @@ window.initGame = (React) => {
         }
       }
     };
+
+    // Function for hard dropping the tetromino
+const hardDropTetromino = () => {
+  let dropPosition = currentPosition;
+
+  // Calculate how far the tetromino can drop
+  while (!checkCollision(dropPosition + 1, squareColumn, currentTetromino)) {
+    dropPosition += 1; // Move down until collision
+  }
+
+  // Lock the tetromino in place on the board
+  const newBoard = [...board];
+  currentTetromino.shape.forEach((row, i) => {
+    row.forEach((cell, j) => {
+      if (cell) {
+        newBoard[dropPosition + i][squareColumn + j] = 1; // Fix the tetromino in the board
+      }
+    });
+  });
+
+  setBoard(clearFullRows(newBoard)); // Clear full rows
+  dropNewSquare(); // Drop a new tetromino
+};
 
     useEffect(() => {
       const handleInterval = setInterval(() => {
