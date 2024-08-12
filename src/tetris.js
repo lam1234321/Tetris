@@ -78,11 +78,11 @@ window.initGame = (React) => {
         newPosition += 1; // Move down
       }
 
-      // Check collision before updating the position
-       if (newColumn >= 0 && newColumn < BOARD_WIDTH && !checkCollision(currentPosition, newColumn, currentTetromino)) {
+      // Check collision before updating the position for left/right movement
+  if (newColumn >= 0 && newColumn < BOARD_WIDTH && !checkCollision(currentPosition, newColumn, currentTetromino)) {
     setSquareColumn(newColumn);
   }
-     // If moving down, check for collision and update the position
+    // If moving down, check for collision and update the position
   if (event.key === "ArrowDown" && !checkCollision(newPosition, squareColumn, currentTetromino)) {
     setCurrentPosition(newPosition); // Move down
   }
