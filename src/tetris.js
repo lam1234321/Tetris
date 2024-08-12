@@ -76,10 +76,10 @@ window.initGame = (React) => {
       }
 
       // Check collision before updating the position
-      if (!checkCollision(currentPosition, newColumn, currentTetromino)) {
-        setSquareColumn(newColumn);
-      }
-    };
+       if (newColumn >= 0 && newColumn < BOARD_WIDTH && !checkCollision(currentPosition, newColumn, currentTetromino)) {
+    setSquareColumn(newColumn);
+  }
+};
 
     const rotateTetromino = () => {
       const newShape = currentTetromino.shape[0].map((_, index) =>
