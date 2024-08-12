@@ -47,23 +47,24 @@ window.initGame = (React) => {
     };
 
     const checkCollision = (newPosition, newColumn, tetromino) => {
-      for (let y = 0; y < tetromino.shape.length; y++) {
-        for (let x = 0; x < tetromino.shape[y].length; x++) {
-          if (tetromino.shape[y][x]) {
-            const newX = newColumn + x;
-            const newY = newPosition + y;
+  for (let y = 0; y < tetromino.shape.length; y++) {
+    for (let x = 0; x < tetromino.shape[y].length; x++) {
+      if (tetromino.shape[y][x]) {
+        const newX = newColumn + x;
+        const newY = newPosition + y;
 
-            if (newX < 0 || newX >= BOARD_WIDTH || newY >= BOARD_HEIGHT) {
-              return true; // Collision with walls or bottom
-            }
-            if (newY >= 0 && board[newY][newX]) {
-              return true; // Collision with existing blocks
-            }
-          }
+        // Check if the new position is out of bounds or colliding
+        if (newX < 0 || newX >= BOARD_WIDTH || newY >= BOARD_HEIGHT) {
+          return true; // Collision with walls or bottom
+        }
+        if (newY >= 0 && newY < BOARD_HEIGHT && board[newY][newX]) {
+          return true; // Collision with existing blocks
         }
       }
-      return false;
-    };
+    }
+  }
+  return false; // No collision detected
+};
 
     const handleKeyDown = (event) => {
       let newColumn = squareColumn;
