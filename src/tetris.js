@@ -67,24 +67,39 @@ window.initGame = (React) => {
 };
 
     const handleKeyDown = (event) => {
-      let newColumn = squareColumn;
-      let newPosition = currentPosition; 
-      
-      if (event.key === "ArrowRight") {
-        newColumn += 1; // Attempt to move right
-      } else if (event.key === "ArrowLeft") {
-        newColumn -= 1; // Attempt to move left
-      } else if (event.key === "ArrowDown") {
-        newPosition += 1; // Move down
-      }
+  let newColumn = squareColumn;
+  let newPosition = currentPosition; 
 
-      // Check collision before updating the position for left/right movement
+  if (event.key === "ArrowRight") {
+    newColumn += 1; // Attempt to move right
+  } else if (event.key === "ArrowLeft") {
+    newColumn -= 1; // Attempt to move left
+  } else if (event.key === "ArrowDown") {
+    newPosition += 1; // Move down
+  }
+
+  // Check collision before updating the position for left/right movement
   if (newColumn >= 0 && newColumn < BOARD_WIDTH && !checkCollision(currentPosition, newColumn, currentTetromino)) {
     setSquareColumn(newColumn);
   }
-    // If moving down, check for collision and update the position
-  if (event.key === "ArrowDown" && !checkCollision(newPosition, squareColumn, currentTetromino)) {
-    setCurrentPosition(newPosition); // Move down
+
+  // If moving down, check for collision and update the position
+  if (event.key === "ArrowDown") {
+    if (!checkCollision(newPosition, squareColumn, currentTetromino)) {
+      setCurrentPosition(newPosition); // Move down if no collision
+    } else {
+      // If there's a collision when moving down, we need to fix the tetromino in place
+      const newBoard = [...board];
+      currentTetromino.shape.forEach((row, i) => {
+        row.forEach((cell, j) => {
+          if (cell) {
+            newBoard[currentPosition + i][squareColumn + j] = 1; // Fix the tetromino in the board
+          }
+        });
+      });
+      setBoard(clearFullRows(newBoard)); // Clear full rows
+      dropNewSquare(); // Drop a new tetromino
+    }
   }
 };
 
