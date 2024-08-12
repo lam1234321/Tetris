@@ -67,6 +67,7 @@ window.initGame = (React) => {
 };
 
     const handleKeyDown = (event) => {
+      console.log(event.key); // Log the key pressed
   let newColumn = squareColumn;
   let newPosition = currentPosition; 
 
