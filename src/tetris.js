@@ -76,6 +76,9 @@ window.initGame = (React) => {
     newColumn -= 1; // Attempt to move left
   } else if (event.key === "ArrowDown") {
     newPosition += 1; // Move down
+  } else if (event.key === "ArrowUp") { // Handle rotation
+    rotateTetromino();
+    return; // Exit to avoid moving down after rotation
   }
 
   // Check collision before updating the position for left/right movement
