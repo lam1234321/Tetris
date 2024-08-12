@@ -110,25 +110,6 @@ window.initGame = (React) => {
   }
 };
 
-    const rotateTetromino = () => {
-      const newShape = currentTetromino.shape[0].map((_, index) =>
-        currentTetromino.shape.map(row => row[index]).reverse()
-      );
-
-      const newTetromino = { ...currentTetromino, shape: newShape };
-
-      if (!checkCollision(currentPosition, squareColumn, newTetromino)) {
-        setCurrentTetromino(newTetromino);
-      } else {
-        // Adjust position if rotation fails
-        if (!checkCollision(currentPosition, squareColumn - 1, newTetromino)) {
-          setSquareColumn(prev => prev - 1); // Shift left
-        } else if (!checkCollision(currentPosition, squareColumn + 1, newTetromino)) {
-          setSquareColumn(prev => prev + 1); // Shift right
-        }
-      }
-    };
-
     // Function for hard dropping the tetromino
 const hardDropTetromino = () => {
   let dropPosition = currentPosition;
@@ -151,6 +132,25 @@ const hardDropTetromino = () => {
   setBoard(clearFullRows(newBoard)); // Clear full rows
   dropNewSquare(); // Drop a new tetromino
 };
+    
+    const rotateTetromino = () => {
+      const newShape = currentTetromino.shape[0].map((_, index) =>
+        currentTetromino.shape.map(row => row[index]).reverse()
+      );
+
+      const newTetromino = { ...currentTetromino, shape: newShape };
+
+      if (!checkCollision(currentPosition, squareColumn, newTetromino)) {
+        setCurrentTetromino(newTetromino);
+      } else {
+        // Adjust position if rotation fails
+        if (!checkCollision(currentPosition, squareColumn - 1, newTetromino)) {
+          setSquareColumn(prev => prev - 1); // Shift left
+        } else if (!checkCollision(currentPosition, squareColumn + 1, newTetromino)) {
+          setSquareColumn(prev => prev + 1); // Shift right
+        }
+      }
+    };
 
     useEffect(() => {
       const handleInterval = setInterval(() => {
