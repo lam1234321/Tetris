@@ -73,14 +73,53 @@ window.initGame = (React) => {
         newColumn += 1; // Attempt to move right
       } else if (event.key === "ArrowLeft") {
         newColumn -= 1; // Attempt to move left
+      } else if (event.key === " ") { // Space bar for hard drop
+        hardDrop();
+        return; // Exit function after hard drop
       }
 
-      // Check collision before updating the position
-       if (newColumn >= 0 && newColumn < BOARD_WIDTH && !checkCollision(currentPosition, newColumn, currentTetromino)) {
-    setSquareColumn(newColumn);
+       // Ensure the new column is within bounds before checking collision
+    if (newColumn >= 0 && newColumn < BOARD_WIDTH) {
+    // Check for collision only if the new column is within valid bounds
+    if (!checkCollision(currentPosition, newColumn, currentTetromino)) {
+      setSquareColumn(newColumn); // Update the column position
+    }
   }
 };
 
+  // Function to handle hard drop
+const hardDrop = () => {
+  let newPosition = currentPosition;
+
+  // Move the piece down until a collision is detected
+  while (!checkCollision(newPosition + 1, squareColumn, currentTetromino)) {
+    newPosition += 1; // Move down
+  }
+
+  // After finding the lowest position, set the position
+  setCurrentPosition(newPosition);
+
+  // Optionally, you may want to lock the piece into place
+  lockPiece(); // Implement this function to handle locking the piece and spawning a new one
+};
+
+// Function to lock the piece in place and spawn a new one
+const lockPiece = () => {
+  // Copy the current tetromino shape to the board
+  for (let y = 0; y < currentTetromino.shape.length; y++) {
+    for (let x = 0; x < currentTetromino.shape[y].length; x++) {
+      if (currentTetromino.shape[y][x]) {
+        board[currentPosition + y][squareColumn + x] = currentTetromino.color; // Or any identifier for the block
+      }
+    }
+  }
+  // Check for completed lines here and remove them if necessary
+  checkForCompletedLines(); // Implement this function to clear completed lines
+
+  // Spawn a new tetromino
+  spawnNewTetromino(); // Implement this function to create a new tetromino
+};
+    
     const rotateTetromino = () => {
       const newShape = currentTetromino.shape[0].map((_, index) =>
         currentTetromino.shape.map(row => row[index]).reverse()
