@@ -123,12 +123,11 @@ window.initGame = (React) => {
     }, [currentPosition, squareColumn, currentTetromino, gameOver]);
 
     useEffect(() => {
-      window.addEventListener('keydown', handleKeyDown);
-      return () => {
-        window.removeEventListener('keydown', handleKeyDown);
-      };
-    }, [gameOver]);
-
+  window.addEventListener('keydown', handleKeyDown);
+  return () => {
+    window.removeEventListener('keydown', handleKeyDown);
+  };
+}, [currentPosition, squareColumn, currentTetromino, gameOver]);
     return React.createElement(
       'div',
       { className: "tetris", tabIndex: 0, onFocus: () => dropNewSquare() },
