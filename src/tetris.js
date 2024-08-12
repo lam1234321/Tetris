@@ -48,50 +48,39 @@ window.initGame = (React) => {
       return [...emptyRows, ...filteredBoard];
     };
 
-    const checkCollision = (newPosition, column, tetromino = currentTetromino) => {
-      for (let i = 0; i < tetromino.shape.length; i++) {
-        for (let j = 0; j < tetromino.shape[i].length; j++) {
-          if (
-            tetromino.shape[i][j] &&
-            (newPosition + i >= BOARD_HEIGHT || // Out of bounds vertically
-            column + j < 0 || 
-            column + j >= BOARD_WIDTH || 
-            board[newPosition + i][column + j] === 1) // Collision with existing blocks
-          ) {
-            return true; // Collision detected
-          }
+    const checkCollision = (newPosition) => {
+  for (let y = 0; y < currentTetromino.shape.length; y++) {
+    for (let x = 0; x < currentTetromino.shape[y].length; x++) {
+      if (currentTetromino.shape[y][x]) {
+        const newX = newPosition.x + x;
+        const newY = newPosition.y + y;
+
+        if (newX < 0 || newX >= BOARD_WIDTH || newY >= BOARD_HEIGHT) {
+          return true; // Collision with walls or bottom
+        }
+        if (newY >= 0 && board[newY][newX]) {
+          return true; // Collision with existing blocks
         }
       }
-      return false; // No collision
-    };
+    }
+  }
+  return false;
+};
 
     const handleKeyDown = (event) => {
-      event.preventDefault();
-      if (gameOver) return;
-
-      switch (event.key) {
-        case "ArrowLeft":
-          if (!checkCollision(currentPosition, squareColumn - 1)) {
-            setSquareColumn(prev => Math.max(0, prev - 1));
-          }
-          break;
-        case "ArrowRight":
-          if (!checkCollision(currentPosition, squareColumn + 1)) {
-            setSquareColumn(prev => Math.min(BOARD_WIDTH - currentTetromino.shape[0].length, prev + 1));
-          }
-          break;
-        case "ArrowDown":
-          if (!checkCollision(currentPosition + 1, squareColumn)) {
-            setCurrentPosition(prev => prev + 1);
-          }
-          break;
-        case "ArrowUp":
-          rotateTetromino(); // Rotate without affecting downward movement
-          break;
-        default:
-          break;
-      }
-    };
+  let newPosition = { x: column, y: row };
+  if (event.key === "ArrowRight") {
+    newPosition.x += 1; // Attempt to move right
+  } else if (event.key === "ArrowLeft") {
+    newPosition.x -= 1; // Attempt to move left
+  }
+  // Check collision before updating the position
+  if (!checkCollision(newPosition)) {
+    setColumn(newPosition.x);
+  } else {
+    console.log(`Collision detected at: ${newPosition.x}, ${newPosition.y}`);
+  }
+};
 
     const rotateTetromino = () => {
       const newShape = currentTetromino.shape[0].map((_, index) =>
