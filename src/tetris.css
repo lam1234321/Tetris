@@ -1,0 +1,27 @@
+.tetris {
+  text-align: center;
+}
+
+.game-board {
+  display: inline-block;
+  position: relative;
+  width: 120px; /* Width of the game board */
+  height: 240px; /* Height of the game board */
+  border: 2px solid black;
+  background-color: black; /* Background color of game board */
+}
+
+.row {
+  display: flex; /* Use flexbox to align cells in a row */
+}
+
+.cell {
+  width: 12px; /* Width of each cell */
+  height: 12px; /* Height of each cell */
+  border: 1px solid gray; /* Border around each cell */
+  background-color: black; /* Color of empty cells */
+}
+
+.active {
+  background-color: blue; /* Color of the square piece */
+}
