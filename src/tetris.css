@@ -25,3 +25,13 @@
 .active {
   background-color: blue; /* Color of the square piece */
 }
+
+React.createElement('style', null, `
+        body {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100vh;
+          margin: 0;
+          background: linear-gradient(to right, #ffe7e7, #d0e1f9);
+        }
